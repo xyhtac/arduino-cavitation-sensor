@@ -3,6 +3,8 @@ include "arduinoFFT.h"  // include library for FFT algorithm
 int micPin = A0;  // pin for the microphone
 int resPin = A1;  // pin for the variable resistor
 
+int outputPin = 12; // choose the output pin
+
 // FFT variables
 arduinoFFT FFT = arduinoFFT();
 double vReal[128], vImag[128];
@@ -11,6 +13,9 @@ void setup() {
   // set the micPin and resPin as inputs
   pinMode(micPin, INPUT);
   pinMode(resPin, INPUT);
+  
+  // set the output pin as an output pin
+  pinMode(outputPin, OUTPUT); 
 
   // initialize the FFT algorithm
   FFT.Windowing(vReal, 128, FFT_WIN_TYP_HAMMING, FFT_FORWARD);
@@ -51,10 +56,16 @@ void loop() {
 
   // check if the dominant frequency is within the 10% window
   bool inWindow = (maxIndex >= minFreq && maxIndex <= maxFreq);
+  
+  if (inWindow) {
+    analogWrite(outputPin, 3); // output a voltage of 3 if inWindow is true
+  } else {
+    analogWrite(outputPin, 5); // output a voltage of 5 if inWindow is false
+  }
 
   // set the output value based on whether the dominant frequency is in the window
-  int output = inWindow ? 100 : 255;
+  int output = inWindow ? 3 : 5;
 
-  // output the result
+  // output the result for testing
   Serial.write(output);
 }
