@@ -3,6 +3,7 @@ include "arduinoFFT.h"  // include library for FFT algorithm
 int micPin = A0;  // pin for the microphone
 int resPin = A1;  // pin for the variable resistor
 
+int ledPin = 13; // add a new LED output pin
 int outputPin = 12; // choose the output pin
 
 // FFT variables
@@ -16,6 +17,9 @@ void setup() {
   
   // set the output pin as an output pin
   pinMode(outputPin, OUTPUT); 
+  
+  // set the LED output pin as an output pin
+  pinMode(ledPin, OUTPUT);
 
   // initialize the FFT algorithm
   FFT.Windowing(vReal, 128, FFT_WIN_TYP_HAMMING, FFT_FORWARD);
@@ -59,8 +63,10 @@ void loop() {
   
   if (inWindow) {
     analogWrite(outputPin, 3); // output a voltage of 3 if inWindow is true
+    digitalWrite(ledPin, HIGH); // turn the LED on if inWindow is true
   } else {
     analogWrite(outputPin, 5); // output a voltage of 5 if inWindow is false
+    digitalWrite(ledPin, LOW); // turn the LED off if inWindow is false
   }
 
   // set the output value based on whether the dominant frequency is in the window
