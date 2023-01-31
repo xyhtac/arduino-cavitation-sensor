@@ -5,6 +5,7 @@ int resPin = A1;  // pin for the variable resistor
 
 int ledPin = 13; // add a new LED output pin
 int outputPin = 12; // choose the output pin
+int PowerLed = 10; // choose the power LED
 
 // FFT variables
 arduinoFFT FFT = arduinoFFT();
